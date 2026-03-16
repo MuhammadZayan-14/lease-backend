@@ -47,32 +47,49 @@ async function updateSheets({ sheets, spreadsheetId, data }) {
   }
 
   if (rowIndex === -1) {
-    throw new Error(
-      `Apartment "${apartment}" with room ${room} not found in ${sheetName} sheet.`,
+    console.log(`Apartment "${apartment}" with room ${room} not found in ${sheetName} sheet. Adding a new row...`);
+    const newRow = Array(21).fill('');
+    newRow[0] = apartment;    // A
+    newRow[2] = room;         // C
+    newRow[3] = tenantName;   // D
+    newRow[4] = startDate;    // E
+    newRow[5] = `$${amount}`; // F
+    newRow[6] = `$${prorate}`;// G
+    newRow[20] = 'Occupied';  // U
+    
+    await sheets.spreadsheets.values.append({
+      spreadsheetId,
+      range: `${sheetName}!A:A`,
+      valueInputOption: 'USER_ENTERED',
+      insertDataOption: 'INSERT_ROWS',
+      requestBody: {
+        values: [newRow],
+      },
+    });
+  } else {
+    console.log(
+      `Found apartment at row ${rowIndex}. Updating Inventory Sheet...`,
     );
+
+    // ✅ MATCHES lease.js (W column)
+    const updates = [
+      { range: `${sheetName}!D${rowIndex}`, values: [[tenantName]] },
+      { range: `${sheetName}!E${rowIndex}`, values: [[startDate]] },
+      { range: `${sheetName}!F${rowIndex}`, values: [[`$${amount}`]] },
+      { range: `${sheetName}!G${rowIndex}`, values: [[`$${prorate}`]] },
+      { range: `${sheetName}!U${rowIndex}`, values: [['Occupied']] },
+    ];
+
+    await sheets.spreadsheets.values.batchUpdate({
+      spreadsheetId,
+      requestBody: {
+        valueInputOption: 'USER_ENTERED',
+        data: updates,
+      },
+    });
   }
 
-  console.log(
-    `Found apartment at row ${rowIndex}. Updating Inventory Sheet...`,
-  );
-
-  // ✅ MATCHES lease.js (W column)
-  const updates = [
-    { range: `${sheetName}!D${rowIndex}`, values: [[tenantName]] },
-    { range: `${sheetName}!E${rowIndex}`, values: [[startDate]] },
-    { range: `${sheetName}!F${rowIndex}`, values: [[`$${amount}`]] },
-    { range: `${sheetName}!G${rowIndex}`, values: [[`$${prorate}`]] },
-    { range: `${sheetName}!U${rowIndex}`, values: [['Occupied']] },
-  ];
-
-  await sheets.spreadsheets.values.batchUpdate({
-    spreadsheetId,
-    requestBody: {
-      valueInputOption: 'USER_ENTERED',
-      data: updates,
-    },
-  });
-
+  /*
   // ===============================
   // Cleaning Sheet
   // ===============================
@@ -251,6 +268,7 @@ async function updateSheets({ sheets, spreadsheetId, data }) {
   } catch (err) {
     console.error('Failed to update Inventory Data sheet:', err.message);
   }
+  */
 
   return { success: true };
 }

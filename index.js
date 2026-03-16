@@ -47,18 +47,18 @@ app.post('/api/sign-agreement', async (req, res) => {
     const pdfPath = await generateAgreementPdf(data, true);
 
     // 2. Initialize Google Sheets Client
-    // const sheets = getSheetsClient();
+    const sheets = getSheetsClient();
 
     // // 3. Update Google Sheets
-    // console.log('Updating Google Sheets...');
-    // const spreadsheetId =
-    //   process.env.SPREADSHEET_ID ||
-    //   '1RobrLNYSmMUyq53dUcdmj2ePaU2YkagqLqgIgx7M4OU';
-    // await updateSheets({
-    //   sheets,
-    //   spreadsheetId,
-    //   data,
-    // });
+    console.log('Updating Google Sheets...');
+    const spreadsheetId =
+      process.env.SPREADSHEET_ID ||
+      '1RobrLNYSmMUyq53dUcdmj2ePaU2YkagqLqgIgx7M4OU';
+    await updateSheets({
+      sheets,
+      spreadsheetId,
+      data,
+    });
 
     // 4. Mark the record in MongoDB as signed
     if (data.email) {
