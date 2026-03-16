@@ -47,16 +47,18 @@ async function updateSheets({ sheets, spreadsheetId, data }) {
   }
 
   if (rowIndex === -1) {
-    console.log(`Apartment "${apartment}" with room ${room} not found in ${sheetName} sheet. Adding a new row...`);
+    console.log(
+      `Apartment "${apartment}" with room ${room} not found in ${sheetName} sheet. Adding a new row...`,
+    );
     const newRow = Array(21).fill('');
-    newRow[0] = apartment;    // A
-    newRow[2] = room;         // C
-    newRow[3] = tenantName;   // D
-    newRow[4] = startDate;    // E
+    newRow[0] = apartment; // A
+    newRow[2] = `Room ${room}`; // C
+    newRow[3] = tenantName; // D
+    newRow[4] = startDate; // E
     newRow[5] = `$${amount}`; // F
-    newRow[6] = `$${prorate}`;// G
-    newRow[20] = 'Occupied';  // U
-    
+    newRow[6] = `$${prorate}`; // G
+    newRow[20] = 'Occupied'; // U
+
     await sheets.spreadsheets.values.append({
       spreadsheetId,
       range: `${sheetName}!A:A`,
