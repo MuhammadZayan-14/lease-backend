@@ -3,17 +3,17 @@
 const nodemailer = require('nodemailer');
 const path = require('path');
 
-async function sendAgreementEmail(recipientEmail, tenantName, pdfPath) {
+async function sendAgreementEmail(recipientEmail, tenantName, pdfPath, includeLetterHead) {
   const transporter = nodemailer.createTransport({
     service: process.env.EMAIL_SERVICE || 'gmail',
     auth: {
-      user: process.env.EMAIL_USER || 'devkhizerahmad@gmail.com',
-      pass: process.env.EMAIL_PASS || 'aief unbt nkfa smrj',
+      user: includeLetterHead ? process.env.EMAIL_USER_LETTERHEAD : process.env.EMAIL_USER || 'devkhizerahmad@gmail.com',
+      pass: includeLetterHead ? process.env.EMAIL_PASS_LETTERHEAD : process.env.EMAIL_PASS || 'aief unbt nkfa smrj',
     },
   });
 
   const mailOptions = {
-    from: process.env.EMAIL_USER || 'devkhizerahmad@gmail.com',
+    from: includeLetterHead ? process.env.EMAIL_USER_LETTERHEAD : process.env.EMAIL_USER || 'devkhizerahmad@gmail.com',
     to: recipientEmail,
     subject: `Signed Sublease Agreement - ${tenantName}`,
     text: `Hello ${tenantName},\n\nPlease find attached your signed Sublease Agreement.`,

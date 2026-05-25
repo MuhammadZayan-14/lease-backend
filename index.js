@@ -44,7 +44,7 @@ app.post('/api/sign-agreement', async (req, res) => {
 
     // 1. Recreate agreement with signature image
     console.log('Generating signed agreement PDF...');
-    const pdfPath = await generateAgreementPdf(data, true);
+    const pdfPath = await generateAgreementPdf(data, data.includeLetterHead);
 
     // 2. Initialize Google Sheets Client
     const sheets = getSheetsClient();
