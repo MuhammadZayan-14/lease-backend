@@ -68,7 +68,7 @@ const writeTextWithBoldNames = (
   return y;
 };
 
-async function generateAgreementPdf(data, includeLetterhead = true) {
+async function generateAgreementPdf(data, includeLetterhead = false) {
   const pdf = new jsPDF('p', 'mm', 'letter');
   const pageWidth = pdf.internal.pageSize.getWidth();
   const margin = 20;
