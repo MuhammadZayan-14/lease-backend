@@ -5,7 +5,7 @@ const { Resend } = require('resend');
 const fs = require('fs');
 const path = require('path');
 
-async function sendAgreementEmail(recipientEmail, tenantName, pdfPath, includeLetterHead) {
+async function sendAgreementEmail(recipientEmail, tenantName, pdfPath, includeLetterHead=false) {
   const pdfBuffer = fs.readFileSync(pdfPath);
   const subject = `Sublease Agreement - ${tenantName}`;
   const text = `

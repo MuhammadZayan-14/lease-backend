@@ -41,6 +41,7 @@ app.post('/api/sign-agreement', async (req, res) => {
     const data = req.body;
     console.log(JSON.stringify(data, null, 2));
     console.log(`Received signature for: ${data.tenantName}`);
+    console.log(`Include Letterhead: ${data.includeLetterHead}`);
 
     // 1. Recreate agreement with signature image
     console.log('Generating signed agreement PDF...');
