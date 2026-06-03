@@ -69,7 +69,7 @@ app.post('/api/sign-agreement', async (req, res) => {
     // 5. Send updated agreement via email
     if (data.email) {
       console.log(`Sending signed agreement to ${data.email}...`);
-      await sendAgreementEmail(data.email, data.tenantName, pdfPath);
+      await sendAgreementEmail(data.email, data.tenantName, pdfPath, data.includeLetterHead);
     }
 
     res.status(200).json({
